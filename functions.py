@@ -161,12 +161,13 @@ def verify_placement(slot, x, y):
 
     while time.time() - start_time < max_time:
         place_unit(slot, x, y)
-        time.sleep(0.5)
+        time.sleep(1) 
 
         if find_button("images/upgrade.png"):
             unit_placed = True
             break
-
+        
+        fix_click(x, y)
         time.sleep(0.5)
 
     if not unit_placed:
