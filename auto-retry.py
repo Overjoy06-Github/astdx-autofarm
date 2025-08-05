@@ -100,14 +100,17 @@ def main():
                 while True:
                     complete = find_button('images/completion.png')
                     if complete:
-                        print("Found retry button, starting new game...")
+                        print("Found completion screen, clicking until retry button appears...")
                         screen_width, screen_height = pyautogui.size()
-                        for _ in range(10):
+                        while True:
+                            retry_btn = find_button('images/retry.png')
+                            if retry_btn:
+                                print("Found retry button, clicking it...")
+                                fix_click(retry_btn[0], retry_btn[1])
+                                time.sleep(1)
+                                break
                             fix_click(screen_width // 2, screen_height // 2)
-                            time.sleep(1)
-                        retry_btn = find_button('images/retry.png')
-                        fix_click(retry_btn[0], retry_btn[1])
-                        time.sleep(1)
+                            time.sleep(0.5)
                         break
                     time.sleep(1)
         except Exception as e:
