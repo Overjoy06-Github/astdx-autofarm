@@ -1,0 +1,67 @@
+{
+    "City of Voldstandig": {
+        "position1": {
+            "hill": [580, 235],
+            "ground": [743, 260],
+            "farm": [881, 593]
+        },
+        "position2": {
+            "hill": [0, 0],
+            "ground": [0, 0],
+            "farm": [0, 0]
+        }
+    },
+    "Future City (Ruins)": {
+        "position1": {
+            "hill": [795, 238],
+            "ground": [735, 511],
+            "farm": [815, 626]
+        },
+        "position2": {
+            "hill": [0, 0],
+            "ground": [0, 0],
+            "farm": [0, 0]
+        }
+    },
+    "Hidden Storm Village": {
+        "position1": {
+            "hill": [744, 548],
+            "ground": [0, 0],
+            "farm": [1100, 700]
+        },
+        "position2": {
+            "hill": [0, 0],
+            "ground": [0, 0],
+            "farm": [0, 0]
+        },
+        "position3": {
+            "hill": [[1565, 670], [1536, 647], [1484, 603]],
+            "ground": [1174, 649],
+            "farm": [[668, 330], [618, 373], [572, 418], [522, 470]]
+        }
+    },
+    "Innovation Island": {
+        "position1": {
+            "hill": [566, 300],
+            "ground": [809, 424],
+            "farm": [816, 660]
+        },
+        "position2": {
+            "hill": [0, 0],
+            "ground": [0, 0],
+            "farm": [0, 0]
+        }
+    },
+    "City of York": {
+        "position1": {
+            "hill": [1102, 304],
+            "ground": [972, 331],
+            "farm": [638, 444]
+        },
+        "position2": {
+            "hill": [0, 0],
+            "ground": [0, 0],
+            "farm": [0, 0]
+        }
+    }
+}
