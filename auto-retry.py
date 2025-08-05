@@ -11,41 +11,63 @@ three_x_speed_coords = (1556, 556)
 two_x_speed_coords = (1493, 556)
 
 def place_all_units(map_placements):
-    verify_placement(farm_unit, map_placements["farm"][0], map_placements["farm"][1])
+    def get_coord_list(coords):
+        if isinstance(coords[0], list):
+            return coords
+        return [coords]
     
+    farm_coords = get_coord_list(map_placements["farm"])
+    print(f"Attempting to place farm unit at {farm_coords[0]}")
+    
+    max_attempts = 5
+    for attempt in range(max_attempts):
+        verify_placement(farm_unit, farm_coords[0][0], farm_coords[0][1])
+        time.sleep(0.5)
+        if find_button('images/upgrade.png'):
+            print("Farm unit placed successfully!")
+            break
+        print(f"Attempt {attempt + 1}: Farm unit not verified, retrying...")
+        if attempt == max_attempts - 1:
+            print("Failed to place farm unit after maximum attempts!")
+            return
+    
+    print("Looking for start button...")
+    time.sleep(1)
     start_btn = find_button("images/start.png")
     if start_btn:
+        print(f"Found start button at {start_btn}, clicking it...")
         fix_click(start_btn[0], start_btn[1])
+        time.sleep(0.5)
+    else:
+        print("Start button not found!")
     time.sleep(1)
     
-    verify_placement(hill_unit, map_placements["hill"][0], map_placements["hill"][1])
-    
+    hill_coords = get_coord_list(map_placements["hill"])
+    verify_placement(hill_unit, hill_coords[0][0], hill_coords[0][1])
+
     placed_positions = {
-        "farm": [(map_placements["farm"][0], map_placements["farm"][1])],
-        "hill": [(map_placements["hill"][0], map_placements["hill"][1])],
+        "farm": [(farm_coords[0][0], farm_coords[0][1])],
+        "hill": [(hill_coords[0][0], hill_coords[0][1])],
         "ground": []
     }
     
     for unit_type in [farm_unit, hill_unit, ground_unit]:
         unit_key = "farm" if unit_type == farm_unit else "hill" if unit_type == hill_unit else "ground"
-        coords = map_placements.get(unit_key)
+        coords_list = get_coord_list(map_placements[unit_key])
         
-        if isinstance(coords[0], list):
-            for coord in coords:
-                if (coord[0], coord[1]) not in placed_positions[unit_key]:
-                    verify_placement(unit_type, coord[0], coord[1])
-                    placed_positions[unit_key].append((coord[0], coord[1]))
-        else:
-            if (coords[0], coords[1]) not in placed_positions[unit_key]:
-                verify_placement(unit_type, coords[0], coords[1])
-                placed_positions[unit_key].append((coords[0], coords[1]))
+        start_index = 1 if unit_key in ["farm", "hill"] else 0
+        
+        for coord in coords_list[start_index:]:
+            if (coord[0], coord[1]) not in placed_positions[unit_key]:
+                verify_placement(unit_type, coord[0], coord[1])
+                placed_positions[unit_key].append((coord[0], coord[1]))
     
     pydirectinput.press("t")
     pydirectinput.press("k")
     pydirectinput.press("t")
 
 def run_game_sequence():
-    while not find_button('images/start.png'):
+    while not find_button('images/setting.png'):
         time.sleep(0.5)
     
     adjust_camera()
@@ -80,8 +102,9 @@ def main():
                     if complete:
                         print("Found retry button, starting new game...")
                         screen_width, screen_height = pyautogui.size()
-                        for i in range(3):
-                            fix_click(int(screen_width / 2), int(screen_height / 2))
+                        for _ in range(10):
+                            fix_click(screen_width // 2, screen_height // 2)
+                            time.sleep(1)
                         retry_btn = find_button('images/retry.png')
                         fix_click(retry_btn[0], retry_btn[1])
                         time.sleep(1)
