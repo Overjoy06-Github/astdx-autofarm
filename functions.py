@@ -2,10 +2,11 @@ from PIL import ImageGrab
 import pydirectinput
 import numpy as np
 import pyautogui
-import json
 import time
 import cv2
 import os
+
+# IF YOU USE MY PROGRAM, I HAVE THE ABILITY TO NAME YOUR FIRST BORN.
 
 def adjust_camera():
     pyautogui.scroll(-7500)
@@ -22,11 +23,13 @@ def adjust_camera():
     pydirectinput.mouseUp(button='right')
     time.sleep(0.05)
 
+
 def fix_click(x, y):
     pydirectinput.moveTo(x, y, duration=0.2)
     pydirectinput.moveRel(1, 0, duration=0.05)
     pydirectinput.click(button='left')
     time.sleep(0.05)
+
 
 def find_button(button_name):
     try:
@@ -41,6 +44,7 @@ def find_button(button_name):
         time.sleep(1)
     except Exception as e:
         pass
+
 
 def get_map():
     pydirectinput.press('z')
@@ -116,9 +120,17 @@ def take_screenshot():
 
 
 def detect_spawn_position(map_name):
-    if not map_name or map_name == "Unknown Map":
+    max_retry = 3
+    retries = 0
+
+    if retries >= max_retry:
         return "unknown_position"
     
+    if not map_name or map_name == "Unknown Map":
+        time.sleep(1)
+        get_map()
+        retries += 1
+        
     map_folder = os.path.join('images', 'spawn_locations', map_name)
 
     screenshot = take_screenshot()
@@ -155,19 +167,19 @@ def place_unit(slot, x, y):
     fix_click(x, y)
 
 def verify_placement(slot, x, y):
-    max_time = 30
+    max_time = 10
     start_time = time.time()
     unit_placed = False
 
     while time.time() - start_time < max_time:
         place_unit(slot, x, y)
+        fix_click(x, y)
         time.sleep(1) 
 
         if find_button("images/upgrade.png"):
             unit_placed = True
             break
         
-        fix_click(x, y)
         time.sleep(0.5)
 
     if not unit_placed:
